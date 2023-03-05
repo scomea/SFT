@@ -1,0 +1,36 @@
+{
+    "name": "@sft/sft",
+    "description": "Steph's FAST toolkit.",
+    "type": "module",
+    "license": "MIT",
+    "author": {
+        "name": "Stephane Comeau",
+        "url": "https://github.com/scomea"
+    },
+    "repository": {
+        "url": "https://github.com/scomea/SFT"
+    },
+    "scripts": {
+        "bump": "beachball bump",
+        "change": "beachball change",
+        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+        "check": "beachball check",
+        "publish": "beachball publish",
+        "publish-ci": "beachball publish -y --access public",
+        "clean": "npm run clean --workspaces --if-present",
+        "build": "npm run build --workspaces --if-present",
+        "lint": "npm run lint --workspaces --if-present",
+        "test": "npm run test --workspaces --if-present"
+    },
+    "workspaces": [
+        "./packages/sft-components"
+    ],
+    "engines": {
+        "node": ">=18.12.0",
+        "npm": ">=8.19.2"
+    },
+    "devDependencies": {
+        "@microsoft/eslint-config-fast-dna": "^2.1.0",
+        "beachball": "^2.31.11"
+    }
+}
