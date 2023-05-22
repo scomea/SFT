@@ -1,21 +1,21 @@
 {
-    "name": "@sft/sft",
-    "description": "Steph's FAST toolkit.",
+    "name": "@adaptive-web/adaptive-web-community",
+    "description": "Steph's web component sandbox, built using FAST.",
     "type": "module",
     "license": "MIT",
     "author": {
-        "name": "Stephane Comeau",
-        "url": "https://github.com/scomea"
+        "name": "Adaptive Web Community",
+        "url": "https://github.com/adaptive-web-community"
     },
     "repository": {
-        "url": "https://github.com/scomea/SFT"
+        "url": "https://github.com/adaptive-web-community/adaptive-web-components"
     },
     "scripts": {
         "bump": "beachball bump",
         "change": "beachball change",
-        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'yarn change' to generate a change file\"",
+        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'npm run change' to generate a change file\"",
         "check": "beachball check",
-        "publish": "beachball publish",
+        "publish": "beachball publish --access public --no-push",
         "publish-ci": "beachball publish -y --access public",
         "clean": "npm run clean --workspaces --if-present",
         "build": "npm run build --workspaces --if-present",
@@ -23,7 +23,7 @@
         "test": "npm run test --workspaces --if-present"
     },
     "workspaces": [
-        "./packages/sft-components"
+        "./packages/sft-web-components"
     ],
     "engines": {
         "node": ">=18.12.0",

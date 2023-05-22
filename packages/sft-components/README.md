@@ -1,3 +1,0 @@
-# SFT Components
-
-Alpha
