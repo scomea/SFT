@@ -1,5 +1,0 @@
-# Contributing to AWC
-
-TODO
-
-

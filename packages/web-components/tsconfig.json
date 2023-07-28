@@ -1,0 +1,9 @@
+{
+	"extends": "../../build/tsconfig.json",
+	"compilerOptions": {
+		"forceConsistentCasingInFileNames": true,
+		"declarationDir": "dist/dts",
+		"outDir": "dist/esm"
+	},
+	"include": ["src"]
+}

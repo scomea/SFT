@@ -1,0 +1,43 @@
+name: Release NPM Packages
+
+on:
+  workflow_dispatch:
+    # schedule:
+    # - cron: '0 7 * * 0-4'
+
+jobs:
+  build_linux:
+    environment: release
+    runs-on: ubuntu-latest
+    if: contains('scomea', github.actor)
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+          registry-url: https://npm.pkg.github.com/
+          scope: '@scomea'
+          always-auth: true
+      - run: npm ci
+
+      - name: Set Git Credentials
+        run: |
+          git config --global user.name "${{ vars.CI_SERVICE_USER }}"
+          git config --global user.email "${{ vars.CI_SERVICE_EMAIL }}"
+          git remote set-url origin "https://$REPO_PAT@github.com/scomea/sft"
+        env:
+          REPO_PAT: ${{ secrets.REPO_PAT }}
+
+      - name: Build Packages
+        run: npm run build
+
+      - name: Check for changed files inside ./change
+        run: npm run checkchange
+
+      - name: Publish to Github Packages
+        run: npm run release
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

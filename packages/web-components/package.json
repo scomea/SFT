@@ -1,0 +1,69 @@
+{
+  "name": "@sft/web-components",
+  "version": "0.0.1",
+  "description": "Steph's fast toolkit web components",
+  "repository": "https://github.com/scomea/SFT.git",
+  "publishConfig": {
+    "@sft:registry": "https://npm.pkg.github.com"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "tsc -p ./tsconfig.build.json && esbuild src/index.ts --bundle --minify --outfile=dist/web-components.js",
+    "build:storybook": "build-storybook",
+    "start": "start-storybook -p 6006"
+  },
+  "author": "Stephane Comeau",
+  "license": "MIT",
+  "files": [
+    "dist"
+  ],
+  "exports": {
+    ".": {
+      "import": "./dist/esm/index.js",
+      "types": "./dist/dts/index.d.ts"
+    },
+    "./bundle": {
+      "import": "./dist/web-components.js",
+      "types": "./dist/dts/index.d.ts"
+    }
+  },
+  "dependencies": {
+    "@adaptive-web/adaptive-ui": "^0.2.0",
+    "@adaptive-web/adaptive-web-components": "^0.4.0",
+    "@fluentui/svg-icons": "^1.1.192",
+    "@microsoft/fast-element": "^2.0.0-beta.24",
+    "@microsoft/fast-foundation": "^3.0.0-alpha.28",
+    "@microsoft/fast-web-utilities": "^6.0.0",
+    "tslib": "^2.5.0"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.20.12",
+    "@custom-elements-manifest/analyzer": "^0.6.8",
+    "@custom-elements-manifest/to-markdown": "^0.1.0",
+    "@microsoft/api-extractor": "^7.34.4",
+    "@rollup/plugin-commonjs": "^11.0.1",
+    "@rollup/plugin-node-resolve": "^7.0.0",
+    "@storybook/addon-actions": "^6.5.16",
+    "@storybook/addon-essentials": "^6.5.16",
+    "@storybook/addon-links": "^6.5.16",
+    "@storybook/builder-webpack5": "^6.5.16",
+    "@storybook/csf": "0.0.2--canary.0899bb7.0",
+    "@storybook/html": "^6.5.16",
+    "@storybook/manager-webpack5": "^6.5.16",
+    "@types/node": "^16.0.0",
+    "@types/react": "^16.14.0",
+    "babel-loader": "^8.3.0",
+    "lit-html": "^2.5.0",
+    "resolve-typescript-plugin": "^1.2.0",
+    "rimraf": "^3.0.2",
+    "rollup": "^2.71.1",
+    "rollup-plugin-filesize": "^9.1.2",
+    "rollup-plugin-svgo": "^2.0.0",
+    "rollup-plugin-terser": "^7.0.2",
+    "rollup-plugin-transform-tagged-template": "^0.0.3",
+    "source-map-loader": "^0.2.4",
+    "svg-inline-loader": "^0.8.2",
+    "ts-loader": "^7.0.2",
+    "typescript": "^4.7.0"
+}
+}

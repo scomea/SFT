@@ -1,36 +1,35 @@
 {
-    "name": "@adaptive-web/adaptive-web-community",
-    "description": "Steph's web component sandbox, built using FAST.",
-    "type": "module",
-    "license": "MIT",
-    "author": {
-        "name": "Adaptive Web Community",
-        "url": "https://github.com/adaptive-web-community"
-    },
-    "repository": {
-        "url": "https://github.com/adaptive-web-community/adaptive-web-components"
-    },
-    "scripts": {
-        "bump": "beachball bump",
-        "change": "beachball change",
-        "checkchange": "beachball check --scope \"!examples/*\" --changehint \"Run 'npm run change' to generate a change file\"",
-        "check": "beachball check",
-        "publish": "beachball publish --access public --no-push",
-        "publish-ci": "beachball publish -y --access public",
-        "clean": "npm run clean --workspaces --if-present",
-        "build": "npm run build --workspaces --if-present",
-        "lint": "npm run lint --workspaces --if-present",
-        "test": "npm run test --workspaces --if-present"
-    },
-    "workspaces": [
-        "./packages/sft-web-components"
-    ],
-    "engines": {
-        "node": ">=18.12.0",
-        "npm": ">=8.19.2"
-    },
-    "devDependencies": {
-        "@microsoft/eslint-config-fast-dna": "^2.1.0",
-        "beachball": "^2.31.11"
-    }
+  "name": "sft",
+  "description": "Steph's FAST toolkit",
+  "private": false,
+  "repository": "https://github.com/scomea/SFT.git",
+  "publishConfig": {
+    "@sft:registry": "https://npm.pkg.github.com"
+  },
+  "scripts": {
+    "build": "npm run build --workspaces",
+    "change": "beachball change",
+    "checkchange": "beachball check",
+    "release": "beachball publish"
+  },
+  "author": "Stephane Comeau",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/scomea/SFT/issues"
+  },
+  "homepage": "https://github.com/scomea/SFT/blob/main/README.md",
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "@microsoft/fast-element": "2.0.0-beta.24",
+    "@microsoft/fast-foundation": "3.0.0-alpha.28",
+    "@microsoft/fast-web-utilities": "6.0.0",
+    "beachball": "^2.33.3",
+    "tslib": "^2.5.3"
+  },
+  "devDependencies": {
+    "esbuild": "^0.18.7",
+    "typescript": "5.0.4"
+  }
 }
