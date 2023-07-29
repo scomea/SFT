@@ -4,7 +4,7 @@
   "private": false,
   "repository": "https://github.com/scomea/SFT.git",
   "publishConfig": {
-    "@sft:registry": "https://npm.pkg.github.com"
+    "@scomea:registry": "https://npm.pkg.github.com"
   },
   "scripts": {
     "build": "npm run build --workspaces",

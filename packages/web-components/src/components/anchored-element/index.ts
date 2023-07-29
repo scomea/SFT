@@ -1,5 +1,5 @@
 export { composeAnchoredElement } from "./anchored-element.compose.js";
-export { AnchoredElement } from "./anchored-element.js"
+export { SFTAnchoredElement as AnchoredElement } from "./anchored-element.js"
 export {
     templateStyles as addPatientTemplateStyles,
     aestheticStyles as addPatientAestheticStyles,

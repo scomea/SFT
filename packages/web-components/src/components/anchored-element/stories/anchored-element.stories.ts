@@ -1,7 +1,7 @@
 import { html } from "@microsoft/fast-element";
 import { uniqueId } from "@microsoft/fast-web-utilities";
 import { Meta, renderComponent, Story, StoryArgs } from "../../../utilities/storybook-helpers.js";
-import type { AnchoredElement } from "../anchored-element.js";
+import type { SFTAnchoredElement } from "../anchored-element.js";
 import {
     AutoUpdateMode,
     AxisPositioningMode,
@@ -12,7 +12,7 @@ import {
 import type { DraggableAnchor } from "./examples/draggable-anchor.js";
 import { ArPositions } from "./examples/ar-position-demo.js";
 
-const storyTemplate = html<StoryArgs<AnchoredElement>>`
+const storyTemplate = html<StoryArgs<SFTAnchoredElement>>`
         <adaptive-anchored-element
             class="region"
             ?use-virtual-anchor="${x => x.useVirtualAnchor}"
@@ -114,7 +114,7 @@ export default {
             ) as any) as DraggableAnchor;
             const region = (renderedStory.querySelector(
                 ".region"
-            ) as any) as AnchoredElement;
+            ) as any) as SFTAnchoredElement;
 
             const anchorId = args.anchorId ?? uniqueId("anchor");
 
@@ -133,10 +133,10 @@ export default {
             return renderedStory;
         },
     ],
-} as Meta<AnchoredElement>;
+} as Meta<SFTAnchoredElement>;
 
-export const AnchoredRegion: Story<AnchoredElement> = renderComponent(
-    html<StoryArgs<AnchoredElement>>`
+export const AnchoredRegion: Story<SFTAnchoredElement> = renderComponent(
+    html<StoryArgs<SFTAnchoredElement>>`
         <div style="min-height: 100px">
             ${storyTemplate}
             <draggable-anchor
@@ -152,8 +152,8 @@ export const AnchoredRegion: Story<AnchoredElement> = renderComponent(
     `
 ).bind({});
 
-export const PointAnchor: Story<AnchoredElement> = renderComponent(
-    html<StoryArgs<AnchoredElement>>`
+export const PointAnchor: Story<SFTAnchoredElement> = renderComponent(
+    html<StoryArgs<SFTAnchoredElement>>`
         <div style="min-height: 100px">
             ${storyTemplate}
         </div>
@@ -177,8 +177,8 @@ PointAnchor.args = {
     `,
 };
 
-export const PositionsDemo: Story<AnchoredElement> = renderComponent(
-    html<StoryArgs<AnchoredElement>>`
+export const PositionsDemo: Story<SFTAnchoredElement> = renderComponent(
+    html<StoryArgs<SFTAnchoredElement>>`
         <ar-position-demo :positions="${x => x.Positions}"></ar-position-demo>
     `
 ).bind({});
@@ -193,8 +193,8 @@ PositionsDemo.args = {
     Positions: "fillLocked",
 };
 
-export const LockIntoView: Story<AnchoredElement> = renderComponent(
-    html<StoryArgs<AnchoredElement>>`
+export const LockIntoView: Story<SFTAnchoredElement> = renderComponent(
+    html<StoryArgs<SFTAnchoredElement>>`
         <ar-lock-into-view></ar-lock-into-view>
     `
 ).bind({});

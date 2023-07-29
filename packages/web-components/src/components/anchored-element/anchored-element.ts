@@ -25,7 +25,7 @@ import type {
  *
  * @public
  */
-export class AnchoredElement extends FASTElement {
+export class SFTAnchoredElement extends FASTElement {
     /**
      * The HTML ID of the anchor element this region is positioned relative to
      *
@@ -612,18 +612,18 @@ export class AnchoredElement extends FASTElement {
         ) {
             return;
         }
-        AnchoredElement.intersectionService.requestPosition(
+        SFTAnchoredElement.intersectionService.requestPosition(
             this,
             this.handleIntersection
         );
         if (this.anchorElement !== null) {
-            AnchoredElement.intersectionService.requestPosition(
+            SFTAnchoredElement.intersectionService.requestPosition(
                 this.anchorElement,
                 this.handleIntersection
             );
         }
         if (this.viewportElement !== null) {
-            AnchoredElement.intersectionService.requestPosition(
+            SFTAnchoredElement.intersectionService.requestPosition(
                 this.viewportElement,
                 this.handleIntersection
             );
@@ -637,18 +637,18 @@ export class AnchoredElement extends FASTElement {
     private stopObservers = (): void => {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
-            AnchoredElement.intersectionService.cancelRequestPosition(
+            SFTAnchoredElement.intersectionService.cancelRequestPosition(
                 this,
                 this.handleIntersection
             );
             if (this.anchorElement !== null) {
-                AnchoredElement.intersectionService.cancelRequestPosition(
+                SFTAnchoredElement.intersectionService.cancelRequestPosition(
                     this.anchorElement,
                     this.handleIntersection
                 );
             }
             if (this.viewportElement !== null) {
-                AnchoredElement.intersectionService.cancelRequestPosition(
+                SFTAnchoredElement.intersectionService.cancelRequestPosition(
                     this.viewportElement,
                     this.handleIntersection
                 );

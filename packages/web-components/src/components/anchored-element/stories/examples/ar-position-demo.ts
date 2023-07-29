@@ -7,7 +7,7 @@ import {
     ref,
     when,
 } from "@microsoft/fast-element";
-import type { AnchoredElement } from "../../anchored-element.js";
+import type { SFTAnchoredElement } from "../../anchored-element.js";
 import type { DraggableAnchor } from "./draggable-anchor.js";
 
 export const ArPositions = {
@@ -49,7 +49,7 @@ export class ARPositionDemo extends FASTElement {
     public handleAnchorMove = (): void => {
         const subelements = this.shadowRoot?.querySelectorAll(".subelement");
         subelements?.forEach(element => {
-            ((element as any) as AnchoredElement).update();
+            ((element as any) as SFTAnchoredElement).update();
         });
     };
 }
