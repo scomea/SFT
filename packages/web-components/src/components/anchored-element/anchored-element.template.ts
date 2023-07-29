@@ -29,7 +29,7 @@ export const AnchoredElementAnatomy: ComponentAnatomy<typeof AnchoredElementCond
  * @public
  */
 export const template: (ds: DesignSystem) => ElementViewTemplate<SFTAnchoredElement> =
-    (ds: DesignSystem) =>
+    () =>
     anchoredElementTemplate();
 
 /**
