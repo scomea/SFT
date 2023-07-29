@@ -1,0 +1,7 @@
+{
+  "type": "minor",
+  "comment": "sft rename",
+  "packageName": "@sft/web-components",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}
