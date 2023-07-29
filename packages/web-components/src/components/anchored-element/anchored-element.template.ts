@@ -1,7 +1,7 @@
 import { ElementViewTemplate, html, when } from "@microsoft/fast-element";
 import { ComponentAnatomy, Interactivity } from "@adaptive-web/adaptive-ui";
 import { DesignSystem } from "@adaptive-web/adaptive-web-components";
-import { AnchoredElement } from "./anchored-element.js";
+import { SFTAnchoredElement } from "./anchored-element.js";
 
 /**
  * @public
@@ -28,7 +28,7 @@ export const AnchoredElementAnatomy: ComponentAnatomy<typeof AnchoredElementCond
  * Template for add-patient component.
  * @public
  */
-export const template: (ds: DesignSystem) => ElementViewTemplate<AnchoredElement> =
+export const template: (ds: DesignSystem) => ElementViewTemplate<SFTAnchoredElement> =
     (ds: DesignSystem) =>
     anchoredElementTemplate();
 
@@ -37,7 +37,7 @@ export const template: (ds: DesignSystem) => ElementViewTemplate<AnchoredElement
  * @public
  */
 export function anchoredElementTemplate<
-    T extends AnchoredElement
+    T extends SFTAnchoredElement
 >(): ElementViewTemplate<T> {
     return html<T>`
         <template data-loaded="${x => (x.initialLayoutComplete ? "loaded" : "")}">
