@@ -6,7 +6,7 @@ import {
     observable,
     ref,
 } from "@microsoft/fast-element";
-import type { FASTAnchoredRegion } from "../../anchored-region.js";
+import type { SFTAnchoredElement } from "../../anchored-element.js";
 import type { DraggableAnchor } from "./draggable-anchor.js";
 
 export function registerARLockIntoView() {
@@ -24,11 +24,11 @@ export function registerARLockIntoView() {
  */
 export class ARLockIntoView extends FASTElement {
     @observable
-    public anchorElement: DraggableAnchor;
+    public anchorElement: DraggableAnchor | undefined;
 
     public connectedCallback(): void {
         super.connectedCallback();
-        this.anchorElement.addEventListener("positionchange", this.handleAnchorMove);
+        this.anchorElement?.addEventListener("positionchange", this.handleAnchorMove);
     }
 
     public disconnectedCallback(): void {
@@ -38,7 +38,7 @@ export class ARLockIntoView extends FASTElement {
     public handleAnchorMove = (): void => {
         const subRegions = this.shadowRoot?.querySelectorAll(".tracking-region");
         subRegions?.forEach(element => {
-            ((element as any) as FASTAnchoredRegion).update();
+            ((element as any) as SFTAnchoredElement).update();
         });
     };
 }

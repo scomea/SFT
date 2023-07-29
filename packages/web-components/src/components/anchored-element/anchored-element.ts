@@ -819,7 +819,7 @@ export class SFTAnchoredElement extends FASTElement {
     /**
      *  Handle resize events
      */
-    private handleResize = (entries: ResizeObserverEntry[]): void => {
+    private handleResize = (): void => {
         this.update();
     };
 
@@ -1290,7 +1290,7 @@ export class SFTAnchoredElement extends FASTElement {
     private getAvailableSpace = (
         positionOption: AnchoredRegionPositionLabel,
         anchorStart: number,
-        anchorEnd: number,
+        _anchorEnd: number,
         anchorSpan: number,
         viewportStart: number,
         viewportEnd: number

@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "remove unused examples",
+  "packageName": "@sft/web-components",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}
