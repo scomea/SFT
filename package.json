@@ -1,7 +1,7 @@
 {
   "name": "sft",
   "description": "Steph's FAST toolkit",
-  "private": false,
+  "private": true,
   "repository": "https://github.com/scomea/SFT.git",
   "publishConfig": {
     "@scomea:registry": "https://npm.pkg.github.com"

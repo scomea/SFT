@@ -4,7 +4,7 @@
   "description": "Steph's fast toolkit web components",
   "repository": "https://github.com/scomea/SFT.git",
   "publishConfig": {
-    "@sft:registry": "https://npm.pkg.github.com"
+    "@scomea:registry": "https://npm.pkg.github.com"
   },
   "type": "module",
   "scripts": {
