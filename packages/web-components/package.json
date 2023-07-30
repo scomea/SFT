@@ -1,6 +1,6 @@
 {
   "name": "@scomea/sft-web-components",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "Steph's fast toolkit web components",
   "repository": "https://github.com/scomea/SFT.git",
   "publishConfig": {
