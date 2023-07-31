@@ -1,10 +1,11 @@
 {
   "name": "@scomea/sft-web-components",
-  "version": "0.0.3",
+  "version": "0.0.4",
   "description": "Steph's fast toolkit web components",
   "repository": "https://github.com/scomea/SFT.git",
   "publishConfig": {
-    "@scomea:registry": "https://npm.pkg.github.com"
+    "@scomea:registry": "https://registry.npmjs.org/",
+    "access": "public"
   },
   "type": "module",
   "scripts": {
