@@ -1,4 +1,4 @@
-name: Release github NPM Packages
+name: Release NPMJS Packages
 
 on:
   workflow_dispatch:
