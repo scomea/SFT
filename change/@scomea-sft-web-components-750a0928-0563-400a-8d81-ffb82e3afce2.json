@@ -1,7 +1,7 @@
 {
   "type": "patch",
-  "comment": "remove unused examples",
-  "packageName": "@sft/web-components",
+  "comment": "working",
+  "packageName": "@scomea/sft-web-components",
   "email": "stephcomeau@msn.com",
   "dependentChangeType": "patch"
 }
