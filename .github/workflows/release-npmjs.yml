@@ -23,6 +23,14 @@ jobs:
           always-auth: true
       - run: npm ci
 
+      - name: Set Git Credentials
+        run: |
+          git config --global user.name "${{ vars.CI_SERVICE_USER }}"
+          git config --global user.email "${{ vars.CI_SERVICE_EMAIL }}"
+          git remote set-url origin "https://$REPO_PAT@github.com/scomea/sft"
+        env:
+          REPO_PAT: ${{ secrets.REPO_PAT }}
+
       - name: Build Packages
         run: npm run build
 

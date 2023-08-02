@@ -39,5 +39,8 @@ jobs:
     - name: Install package dependencies
       run: npm install --ignore-scripts
 
+    - name: Check for build errors
+      run: npm run build
+
     - name: Check for the presence of changed files inside ./change
       run: npm run checkchange
