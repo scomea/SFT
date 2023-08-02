@@ -36,6 +36,8 @@ jobs:
         key: ${{ runner.os }}-npm_cache-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
           ${{ runner.os }}-npm_cache-
+    - name: Install esbuild
+      run: npm install esbuild
     - name: Install package dependencies
       run: npm install --ignore-scripts
 
