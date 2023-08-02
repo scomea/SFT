@@ -1,20 +1,35 @@
-name: Release NPMJS packages
+name: Release github NPM Packages
 
 on:
-  release:
-    types: [published]
+  workflow_dispatch:
+    # schedule:
+    # - cron: '0 7 * * 0-4'
 
 jobs:
-  build:
+  build_linux:
+    environment: release
     runs-on: ubuntu-latest
+    if: contains('scomea', github.actor)
+
     steps:
       - uses: actions/checkout@v3
-      # Setup .npmrc file to publish to npm
+        with:
+          persist-credentials: false
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
-          registry-url: 'https://registry.npmjs.org'
+          node-version: 16
+          registry-url: https://registry.npmjs.org
+          scope: '@scomea'
+          always-auth: true
       - run: npm ci
-      - run: npm publish
+
+      - name: Build Packages
+        run: npm run build
+
+      - name: Check for changed files inside ./change
+        run: npm run checkchange
+
+      - name: Publish
+        run: npm run release
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
