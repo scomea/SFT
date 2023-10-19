@@ -2,10 +2,10 @@ import { css, ElementViewTemplate, html, ref, when } from "@microsoft/fast-eleme
 import { SFTAnchoredElement } from "../../anchored-element.js";
 
 export function registerAnchoredRegionPointer() {
-    AnchoredRegionPointer.define({
+    AnchoredElementPointer.define({
         name: "anchored-region-pointer",
-        template: anchoredRegionPointerTemplate(),
-        styles: anchoredRegionPointerStyles,
+        template: anchoredElementPointerTemplate(),
+        styles: anchoredElementPointerStyles,
     });
 }
 
@@ -14,7 +14,7 @@ export function registerAnchoredRegionPointer() {
  *
  * @public
  */
-export class AnchoredRegionPointer extends SFTAnchoredElement {
+export class AnchoredElementPointer extends SFTAnchoredElement {
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -63,8 +63,8 @@ export class AnchoredRegionPointer extends SFTAnchoredElement {
  * The template
  * @public
  */
-export function anchoredRegionPointerTemplate<
-    T extends AnchoredRegionPointer
+export function anchoredElementPointerTemplate<
+    T extends AnchoredElementPointer
 >(): ElementViewTemplate<T> {
     return html<T>`
         <template data-loaded="${x => (x.initialLayoutComplete ? "loaded" : "")}">
@@ -77,7 +77,7 @@ export function anchoredRegionPointerTemplate<
                             transform:rotate(${x =>
                             x.getRotation(x.anchorRect, x.regionRect)}deg);
                             opacity:${x =>
-                            (600 - x.getDistance(x.anchorRect, x.regionRect)) / 600};
+                            (2000 - x.getDistance(x.anchorRect, x.regionRect)) / 2000};
                         "
                     >
                         <slot name="pointer"></slot>
@@ -89,7 +89,7 @@ export function anchoredRegionPointerTemplate<
     `;
 }
 
-export const anchoredRegionPointerStyles = css`
+export const anchoredElementPointerStyles = css`
     :host {
         display: block;
         will-change: transform;

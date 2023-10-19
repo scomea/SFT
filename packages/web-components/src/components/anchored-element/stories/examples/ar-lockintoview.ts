@@ -5,9 +5,11 @@ import {
     html,
     observable,
     ref,
+    Updates,
 } from "@microsoft/fast-element";
 import type { SFTAnchoredElement } from "../../anchored-element.js";
 import type { DraggableAnchor } from "./draggable-anchor.js";
+import { AnchoredElementPointer } from "./anchored-element-pointer.js";
 
 export function registerARLockIntoView() {
     ARLockIntoView.define({
@@ -26,6 +28,8 @@ export class ARLockIntoView extends FASTElement {
     @observable
     public anchorElement: DraggableAnchor | undefined;
 
+    public canvasElement!: HTMLCanvasElement;
+
     public connectedCallback(): void {
         super.connectedCallback();
         this.anchorElement?.addEventListener("positionchange", this.handleAnchorMove);
@@ -35,11 +39,52 @@ export class ARLockIntoView extends FASTElement {
         super.disconnectedCallback();
     }
 
+    public drawConnections = (): void => {
+        const ctx: CanvasRenderingContext2D | null = this.canvasElement.getContext("2d");
+        if (!ctx) {
+            return;
+        }
+
+        ctx.reset();
+
+        const start = { x: 0, y: 0 };
+        const cp1 = { x: 0, y: 0 };
+        const cp2 = { x: 0, y: 0 };
+        const end = { x: 0, y: 0 };
+
+        let pointer: AnchoredElementPointer;
+
+        const subRegions = this.shadowRoot?.querySelectorAll(".tracking-region");
+        subRegions?.forEach((element) => {
+            pointer = element as AnchoredElementPointer;
+
+            if (!pointer.anchorRect || !pointer.regionRect) {
+                return;
+            }
+
+            start.x = pointer.regionRect.x;
+            start.y = pointer.regionRect.y;
+            end.x = pointer.anchorRect.x;
+            end.y = pointer.anchorRect.y;
+            cp1.x = pointer.anchorRect.x;
+            cp1.y = pointer.anchorRect.y;
+            cp2.x = pointer.regionRect.x;
+            cp2.y = pointer.regionRect.y;
+
+            ctx.beginPath();
+            ctx.moveTo(start.x, start.y);
+            // ctx.lineTo(end.x, end.y);
+            ctx.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
+            ctx.stroke();
+        });
+    }
+
     public handleAnchorMove = (): void => {
         const subRegions = this.shadowRoot?.querySelectorAll(".tracking-region");
         subRegions?.forEach(element => {
             ((element as any) as SFTAnchoredElement).update();
         });
+        Updates.enqueue(() => this.drawConnections());
     };
 }
 
@@ -81,6 +126,14 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
 > {
     return html<T>`
         <template>
+            <canvas
+                height=2000;
+                width=2000;
+                class="canvas"
+                ${ref("canvasElement")}
+            >
+
+            </canvas>
             <h1>
                 Lock into view
             </h1>
@@ -429,13 +482,13 @@ export const arLockIntoViewStyles = css`
     .tracking-region {
         pointer-events: none;
         background: blue;
-        opacity: 0.5;
+        opacity: 1;
         border: solid green 2px;
     }
     .tracking-region.many {
         pointer-events: none;
         background: blue;
-        opacity: 0.5;
+        opacity: 1;
         border: none;
     }
     .tracking-region.top {
@@ -475,5 +528,10 @@ export const arLockIntoViewStyles = css`
     .manytracker {
         height: 50px;
         width: 50px;
+    }
+    .canvas {
+        position: fixed;
+        z-index: 50;
+        transform: translate(-16px, -36px);
     }
 `;
