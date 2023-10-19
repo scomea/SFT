@@ -847,7 +847,7 @@ export class SFTAnchoredElement extends FASTElement {
     /**
      *  Recalculate layout related state values
      */
-    protected updateLayout = (): void => {
+    protected updateLayout (): void {
         let desiredVerticalPosition: AnchoredRegionPositionLabel | undefined = undefined;
         let desiredHorizontalPosition:
             | AnchoredRegionPositionLabel

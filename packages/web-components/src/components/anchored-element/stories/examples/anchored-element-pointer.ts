@@ -1,4 +1,4 @@
-import { css, ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
+import { css, ElementViewTemplate, html, observable, ref, when } from "@microsoft/fast-element";
 import { SFTAnchoredElement } from "../../anchored-element.js";
 
 export function registerAnchoredRegionPointer() {
@@ -15,6 +15,9 @@ export function registerAnchoredRegionPointer() {
  * @public
  */
 export class AnchoredElementPointer extends SFTAnchoredElement {
+    @observable
+    public distance: number = 0;
+    public rotation: number = 0;
 
     public connectedCallback(): void {
         super.connectedCallback();
@@ -24,7 +27,13 @@ export class AnchoredElementPointer extends SFTAnchoredElement {
         super.disconnectedCallback();
     }
 
-    public getRotation(
+    protected updateLayout = () => {
+        super.updateLayout();
+        this.rotation = this.getRotation(this.anchorRect, this.regionRect);
+        this.distance = this.getDistance(this.anchorRect, this.regionRect);
+    };
+
+    private getRotation(
         anchorRect: DOMRect | undefined,
         regionRect: DOMRect | undefined
     ): number {
@@ -42,7 +51,7 @@ export class AnchoredElementPointer extends SFTAnchoredElement {
         return (Math.atan2(dy, dx) * 180) / Math.PI + 180;
     }
 
-    public getDistance(
+    private getDistance(
         anchorRect: DOMRect | undefined,
         regionRect: DOMRect | undefined
     ): number {
@@ -75,9 +84,9 @@ export function anchoredElementPointerTemplate<
                         class="pointer"
                         style="
                             transform:rotate(${x =>
-                            x.getRotation(x.anchorRect, x.regionRect)}deg);
+                            x.rotation}deg);
                             opacity:${x =>
-                            (2000 - x.getDistance(x.anchorRect, x.regionRect)) / 2000};
+                            (2000 - x.distance) / 2000};
                         "
                     >
                         <slot name="pointer"></slot>
