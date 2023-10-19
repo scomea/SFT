@@ -1,4 +1,4 @@
-import { css, ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import { css, ElementViewTemplate, html, ref, when } from "@microsoft/fast-element";
 import { SFTAnchoredElement } from "../../anchored-element.js";
 
 export function registerAnchoredRegionPointer() {
@@ -15,6 +15,7 @@ export function registerAnchoredRegionPointer() {
  * @public
  */
 export class AnchoredRegionPointer extends SFTAnchoredElement {
+
     public connectedCallback(): void {
         super.connectedCallback();
     }
