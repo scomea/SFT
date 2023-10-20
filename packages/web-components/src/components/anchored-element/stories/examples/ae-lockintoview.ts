@@ -13,10 +13,10 @@ import type { SFTAnchoredElement } from "../../anchored-element.js";
 import type { DraggableAnchor } from "./draggable-anchor.js";
 import { AnchoredElementPointer } from "./anchored-element-pointer.js";
 
-export function registerARLockIntoView() {
-    ARLockIntoView.define({
-        name: "ar-lock-into-view",
-        template: arLockIntoViewTemplate(),
+export function registerAELockIntoView() {
+    AELockIntoView.define({
+        name: "ae-lock-into-view",
+        template: aeLockIntoViewTemplate(),
         styles: arLockIntoViewStyles,
     });
 }
@@ -26,7 +26,7 @@ export function registerARLockIntoView() {
  *
  * @public
  */
-export class ARLockIntoView extends FASTElement {
+export class AELockIntoView extends FASTElement {
     @observable
     public anchorElement: DraggableAnchor | undefined;
 
@@ -142,7 +142,7 @@ const manyTrackersTemplate = html`
  * The template
  * @public
  */
-export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewTemplate<
+export function aeLockIntoViewTemplate<T extends AELockIntoView>(): ElementViewTemplate<
     T
 > {
     return html<T>`
