@@ -201,3 +201,12 @@ export const LockIntoView: Story<SFTAnchoredElement> = renderComponent(
 LockIntoView.parameters = { controls: { include: [], hideNoControlsWarning: true } };
 LockIntoView.argTypes = {};
 LockIntoView.args = {};
+
+export const Bezier: Story<SFTAnchoredElement> = renderComponent(
+    html<StoryArgs<SFTAnchoredElement>>`
+        <ae-bezier></ae-bezier>
+    `
+).bind({});
+Bezier.parameters = { controls: { include: [], hideNoControlsWarning: true } };
+Bezier.argTypes = {};
+Bezier.args = {};

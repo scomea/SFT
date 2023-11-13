@@ -1,9 +1,9 @@
 /**
- *  A service to batch intersection event callbacks so multiple elements can share a single observer
+ *  A service to batch getting element geometry
  *
  * @public
  */
-export class IntersectionService {
+export class geometryService {
     private intersectionDetector: IntersectionObserver | null = null;
 
     private observedElements: Map<Element, any[]> = new Map<Element, any[]>();
@@ -17,7 +17,7 @@ export class IntersectionService {
      *
      * @internal
      */
-    public requestPosition = (
+    public requestGeometry = (
         target: Element,
         callback: (entries: IntersectionObserverEntry[]) => void
     ): void => {
@@ -38,7 +38,7 @@ export class IntersectionService {
      *
      * @internal
      */
-    public cancelRequestPosition = (target: Element, callback: any): void => {
+    public cancelRequestGeometry = (target: Element, callback: any): void => {
         const callbacks: any[] | undefined = this.observedElements.get(target);
 
         if (callbacks !== undefined) {

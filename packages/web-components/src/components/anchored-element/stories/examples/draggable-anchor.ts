@@ -113,5 +113,6 @@ export const draggableAnchorStyles = css`
     :host {
         display: block;
         position: fixed;
+        transform-origin: 50% 50%;
     }
 `;

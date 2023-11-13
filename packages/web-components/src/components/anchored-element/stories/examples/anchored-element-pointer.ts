@@ -86,7 +86,7 @@ export function anchoredElementPointerTemplate<
                             transform:rotate(${x =>
                             x.rotation}deg);
                             opacity:${x =>
-                            (2000 - x.distance) / 2000};
+                            (1000 - x.distance) / 1000};
                         "
                     >
                         <slot name="pointer"></slot>

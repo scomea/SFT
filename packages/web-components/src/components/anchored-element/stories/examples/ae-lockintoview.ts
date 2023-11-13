@@ -450,6 +450,7 @@ export const arLockIntoViewStyles = css`
         width: 60px;
     }
     .canvas {
+        pointer-events: none;
         position: fixed;
         z-index: 50;
         transform: translate(-16px, -36px);

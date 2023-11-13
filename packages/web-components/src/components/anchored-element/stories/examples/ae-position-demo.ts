@@ -15,7 +15,7 @@ export const ArPositions = {
     fillLocked: "fillLocked",
 } as const;
 
-export function registerARPositionDemo() {
+export function registerAEPositionDemo() {
     AEPositionDemo.define({
         name: "ae-position-demo",
         template: aePositionDemoTemplate(),
