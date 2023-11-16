@@ -1,0 +1,7 @@
+{
+  "type": "patch",
+  "comment": "remove style module",
+  "packageName": "@scomea/sft-web-components",
+  "email": "stephcomeau@msn.com",
+  "dependentChangeType": "patch"
+}
