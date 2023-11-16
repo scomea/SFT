@@ -51,8 +51,7 @@ export class AELockIntoView extends FASTElement {
             return;
         }
 
-        // eslint-disable-next-line
-        this.renderContext.reset();
+        (this.renderContext as any).reset();
 
         const start = { x: 0, y: 0 };
         const cp1 = { x: 0, y: 0 };
