@@ -508,7 +508,7 @@ export class SFTAnchoredElement extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+        this.resizeDetector = new window.ResizeObserver(
             this.handleResize
         );
     }
