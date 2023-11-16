@@ -1,11 +1,11 @@
-import { css, ElementViewTemplate, html, when } from "@microsoft/fast-element";
+import { css, ElementViewTemplate, html, observable, ref, when } from "@microsoft/fast-element";
 import { SFTAnchoredElement } from "../../anchored-element.js";
 
 export function registerAnchoredRegionPointer() {
-    AnchoredRegionPointer.define({
+    AnchoredElementPointer.define({
         name: "anchored-region-pointer",
-        template: anchoredRegionPointerTemplate(),
-        styles: anchoredRegionPointerStyles,
+        template: anchoredElementPointerTemplate(),
+        styles: anchoredElementPointerStyles,
     });
 }
 
@@ -14,7 +14,11 @@ export function registerAnchoredRegionPointer() {
  *
  * @public
  */
-export class AnchoredRegionPointer extends SFTAnchoredElement {
+export class AnchoredElementPointer extends SFTAnchoredElement {
+    @observable
+    public distance: number = 0;
+    public rotation: number = 0;
+
     public connectedCallback(): void {
         super.connectedCallback();
     }
@@ -23,7 +27,13 @@ export class AnchoredRegionPointer extends SFTAnchoredElement {
         super.disconnectedCallback();
     }
 
-    public getRotation(
+    protected updateLayout = () => {
+        super.updateLayout();
+        this.rotation = this.getRotation(this.anchorRect, this.regionRect);
+        this.distance = this.getDistance(this.anchorRect, this.regionRect);
+    };
+
+    private getRotation(
         anchorRect: DOMRect | undefined,
         regionRect: DOMRect | undefined
     ): number {
@@ -41,7 +51,7 @@ export class AnchoredRegionPointer extends SFTAnchoredElement {
         return (Math.atan2(dy, dx) * 180) / Math.PI + 180;
     }
 
-    public getDistance(
+    private getDistance(
         anchorRect: DOMRect | undefined,
         regionRect: DOMRect | undefined
     ): number {
@@ -62,8 +72,8 @@ export class AnchoredRegionPointer extends SFTAnchoredElement {
  * The template
  * @public
  */
-export function anchoredRegionPointerTemplate<
-    T extends AnchoredRegionPointer
+export function anchoredElementPointerTemplate<
+    T extends AnchoredElementPointer
 >(): ElementViewTemplate<T> {
     return html<T>`
         <template data-loaded="${x => (x.initialLayoutComplete ? "loaded" : "")}">
@@ -74,9 +84,9 @@ export function anchoredRegionPointerTemplate<
                         class="pointer"
                         style="
                             transform:rotate(${x =>
-                            x.getRotation(x.anchorRect, x.regionRect)}deg);
+                            x.rotation}deg);
                             opacity:${x =>
-                            (600 - x.getDistance(x.anchorRect, x.regionRect)) / 600};
+                            (1000 - x.distance) / 1000};
                         "
                     >
                         <slot name="pointer"></slot>
@@ -88,7 +98,7 @@ export function anchoredRegionPointerTemplate<
     `;
 }
 
-export const anchoredRegionPointerStyles = css`
+export const anchoredElementPointerStyles = css`
     :host {
         display: block;
         will-change: transform;

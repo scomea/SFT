@@ -10,7 +10,7 @@ import {
     VerticalPosition,
 } from "../anchored-element.options.js";
 import type { DraggableAnchor } from "./examples/draggable-anchor.js";
-import { ArPositions } from "./examples/ar-position-demo.js";
+import { ArPositions } from "./examples/ae-position-demo.js";
 
 const storyTemplate = html<StoryArgs<SFTAnchoredElement>>`
         <adaptive-anchored-element
@@ -135,7 +135,7 @@ export default {
     ],
 } as Meta<SFTAnchoredElement>;
 
-export const AnchoredRegion: Story<SFTAnchoredElement> = renderComponent(
+export const AnchoredElement: Story<SFTAnchoredElement> = renderComponent(
     html<StoryArgs<SFTAnchoredElement>>`
         <div style="min-height: 100px">
             ${storyTemplate}
@@ -179,7 +179,7 @@ PointAnchor.args = {
 
 export const PositionsDemo: Story<SFTAnchoredElement> = renderComponent(
     html<StoryArgs<SFTAnchoredElement>>`
-        <ar-position-demo :positions="${x => x.Positions}"></ar-position-demo>
+        <ae-position-demo :positions="${x => x.Positions}"></ae-position-demo>
     `
 ).bind({});
 PositionsDemo.parameters = { controls: { include: ["Positions"] } };
@@ -195,9 +195,18 @@ PositionsDemo.args = {
 
 export const LockIntoView: Story<SFTAnchoredElement> = renderComponent(
     html<StoryArgs<SFTAnchoredElement>>`
-        <ar-lock-into-view></ar-lock-into-view>
+        <ae-lock-into-view></ae-lock-into-view>
     `
 ).bind({});
 LockIntoView.parameters = { controls: { include: [], hideNoControlsWarning: true } };
 LockIntoView.argTypes = {};
 LockIntoView.args = {};
+
+export const Bezier: Story<SFTAnchoredElement> = renderComponent(
+    html<StoryArgs<SFTAnchoredElement>>`
+        <ae-bezier></ae-bezier>
+    `
+).bind({});
+Bezier.parameters = { controls: { include: [], hideNoControlsWarning: true } };
+Bezier.argTypes = {};
+Bezier.args = {};

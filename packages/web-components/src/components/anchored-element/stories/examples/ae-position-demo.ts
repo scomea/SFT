@@ -15,11 +15,11 @@ export const ArPositions = {
     fillLocked: "fillLocked",
 } as const;
 
-export function registerARPositionDemo() {
-    ARPositionDemo.define({
-        name: "ar-position-demo",
-        template: arPositionDemoTemplate(),
-        styles: arPositionDemoStyles,
+export function registerAEPositionDemo() {
+    AEPositionDemo.define({
+        name: "ae-position-demo",
+        template: aePositionDemoTemplate(),
+        styles: aePositionDemoStyles,
     });
 }
 
@@ -30,7 +30,7 @@ export type ArPositions = typeof ArPositions[keyof typeof ArPositions];
  *
  * @public
  */
-export class ARPositionDemo extends FASTElement {
+export class AEPositionDemo extends FASTElement {
     @observable
     public anchorElement: DraggableAnchor | undefined;
 
@@ -58,7 +58,7 @@ export class ARPositionDemo extends FASTElement {
  * The template
  * @public
  */
-export function arPositionDemoTemplate<T extends ARPositionDemo>(): ElementViewTemplate<
+export function aePositionDemoTemplate<T extends AEPositionDemo>(): ElementViewTemplate<
     T
 > {
     return html<T>`
@@ -329,7 +329,7 @@ export function arPositionDemoTemplate<T extends ARPositionDemo>(): ElementViewT
     `;
 }
 
-export const arPositionDemoStyles = css`
+export const aePositionDemoStyles = css`
     :host {
         display: block;
     }

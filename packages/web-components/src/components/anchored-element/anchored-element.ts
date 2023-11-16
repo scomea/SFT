@@ -1,11 +1,7 @@
 import { attr, FASTElement, observable, Updates } from "@microsoft/fast-element";
 import { Direction, eventResize, eventScroll } from "@microsoft/fast-web-utilities";
 import { getDirection } from "@microsoft/fast-foundation";
-import { IntersectionService } from "../../utilities/intersection-service.js";
-import type {
-    ResizeObserverClassDefinition,
-    ResizeObserverEntry,
-} from "../../utilities/resize-observer.js";
+import { geometryService } from "../../utilities/geometry-service.js";
 import type {
     AnchoredRegionPositionLabel,
     AutoUpdateMode,
@@ -427,7 +423,7 @@ export class SFTAnchoredElement extends FASTElement {
     private regionWidth: string = "";
     private regionHeight: string = "";
 
-    private resizeDetector: ResizeObserverClassDefinition | null = null;
+    private resizeDetector: ResizeObserver | null = null;
 
     /**
      * base offsets between the positioner's base position and the anchor's
@@ -448,7 +444,7 @@ export class SFTAnchoredElement extends FASTElement {
     // justify a layout update that affects the dom (prevents repeated sub-pixel corrections)
     private updateThreshold: number = 0.5;
 
-    private static intersectionService: IntersectionService = new IntersectionService();
+    private static intersectionService: geometryService = new geometryService();
 
     /**
      * @internal
@@ -512,7 +508,7 @@ export class SFTAnchoredElement extends FASTElement {
      */
     private initializeResizeDetector(): void {
         this.disconnectResizeDetector();
-        this.resizeDetector = new ((window as unknown) as WindowWithResizeObserver).ResizeObserver(
+        this.resizeDetector = new window.ResizeObserver(
             this.handleResize
         );
     }
@@ -612,18 +608,18 @@ export class SFTAnchoredElement extends FASTElement {
         ) {
             return;
         }
-        SFTAnchoredElement.intersectionService.requestPosition(
+        SFTAnchoredElement.intersectionService.requestGeometry(
             this,
             this.handleIntersection
         );
         if (this.anchorElement !== null) {
-            SFTAnchoredElement.intersectionService.requestPosition(
+            SFTAnchoredElement.intersectionService.requestGeometry(
                 this.anchorElement,
                 this.handleIntersection
             );
         }
         if (this.viewportElement !== null) {
-            SFTAnchoredElement.intersectionService.requestPosition(
+            SFTAnchoredElement.intersectionService.requestGeometry(
                 this.viewportElement,
                 this.handleIntersection
             );
@@ -637,18 +633,18 @@ export class SFTAnchoredElement extends FASTElement {
     private stopObservers = (): void => {
         if (this.pendingPositioningUpdate) {
             this.pendingPositioningUpdate = false;
-            SFTAnchoredElement.intersectionService.cancelRequestPosition(
+            SFTAnchoredElement.intersectionService.cancelRequestGeometry(
                 this,
                 this.handleIntersection
             );
             if (this.anchorElement !== null) {
-                SFTAnchoredElement.intersectionService.cancelRequestPosition(
+                SFTAnchoredElement.intersectionService.cancelRequestGeometry(
                     this.anchorElement,
                     this.handleIntersection
                 );
             }
             if (this.viewportElement !== null) {
-                SFTAnchoredElement.intersectionService.cancelRequestPosition(
+                SFTAnchoredElement.intersectionService.cancelRequestGeometry(
                     this.viewportElement,
                     this.handleIntersection
                 );
@@ -847,7 +843,7 @@ export class SFTAnchoredElement extends FASTElement {
     /**
      *  Recalculate layout related state values
      */
-    private updateLayout = (): void => {
+    protected updateLayout (): void {
         let desiredVerticalPosition: AnchoredRegionPositionLabel | undefined = undefined;
         let desiredHorizontalPosition:
             | AnchoredRegionPositionLabel

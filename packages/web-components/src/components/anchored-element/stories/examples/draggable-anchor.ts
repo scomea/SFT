@@ -99,12 +99,12 @@ export function draggableAnchorTemplate<T extends DraggableAnchor>(): ElementVie
 > {
     return html<T>`
         <template>
-            <adaptive-button
+            <button
                 @mousedown="${(x, c) => x.handleMouseDown(c.event as MouseEvent)}"
                 @mouseup="${(x, c) => x.handleMouseUp(c.event as MouseEvent)}"
             >
                 <slot></slot>
-            </adaptive-button>
+            </button>
         </template>
     `;
 }
@@ -113,5 +113,6 @@ export const draggableAnchorStyles = css`
     :host {
         display: block;
         position: fixed;
+        transform-origin: 50% 50%;
     }
 `;

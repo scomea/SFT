@@ -5,14 +5,18 @@ import {
     html,
     observable,
     ref,
+    repeat,
+    Updates,
+    ViewTemplate,
 } from "@microsoft/fast-element";
 import type { SFTAnchoredElement } from "../../anchored-element.js";
 import type { DraggableAnchor } from "./draggable-anchor.js";
+import { AnchoredElementPointer } from "./anchored-element-pointer.js";
 
-export function registerARLockIntoView() {
-    ARLockIntoView.define({
-        name: "ar-lock-into-view",
-        template: arLockIntoViewTemplate(),
+export function registerAELockIntoView() {
+    AELockIntoView.define({
+        name: "ae-lock-into-view",
+        template: aeLockIntoViewTemplate(),
         styles: arLockIntoViewStyles,
     });
 }
@@ -22,17 +26,61 @@ export function registerARLockIntoView() {
  *
  * @public
  */
-export class ARLockIntoView extends FASTElement {
+export class AELockIntoView extends FASTElement {
     @observable
     public anchorElement: DraggableAnchor | undefined;
+
+    public canvasElement!: HTMLCanvasElement;
+    private renderContext: CanvasRenderingContext2D | null = null;
+    private trackingRegions: NodeListOf<Element> | undefined;
 
     public connectedCallback(): void {
         super.connectedCallback();
         this.anchorElement?.addEventListener("positionchange", this.handleAnchorMove);
+        this.renderContext = this.canvasElement.getContext("2d");
+        this.trackingRegions = this.shadowRoot?.querySelectorAll(".tracking-region");
     }
 
     public disconnectedCallback(): void {
         super.disconnectedCallback();
+    }
+
+    public drawConnections = (): void => {
+        
+        if (!this.renderContext) {
+            return;
+        }
+
+        (this.renderContext as any).reset();
+
+        const start = { x: 0, y: 0 };
+        const cp1 = { x: 0, y: 0 };
+        const cp2 = { x: 0, y: 0 };
+        const end = { x: 0, y: 0 };
+
+        let pointer: AnchoredElementPointer;
+        this.renderContext!.lineWidth = 16;
+        this.trackingRegions?.forEach((element) => {
+            pointer = element as AnchoredElementPointer;
+
+            if (pointer.anchorRect && pointer.regionRect && pointer.distance < 500) {
+                start.x = pointer.regionRect.left + (pointer.regionRect.width / 2);
+                start.y = pointer.regionRect.top + (pointer.regionRect.height / 2);
+                end.x = pointer.anchorRect.left + (pointer.anchorRect.width / 2);
+                end.y = pointer.anchorRect.top + (pointer.anchorRect.height / 2);
+                cp1.x = end.x;
+                cp1.y = end.y;
+                cp2.x = start.x;
+                cp2.y = start.y;
+    
+                this.renderContext!.strokeStyle = `rgba(
+                    ${255 - (pointer.rotation/360 * 255)},${pointer.rotation/360 * 255},0,${(500 - pointer.distance) / 500 * 0.6})`;;
+                this.renderContext!.beginPath();
+                this.renderContext!.moveTo(start.x, start.y);
+                this.renderContext!.bezierCurveTo(cp1.x, cp1.y, cp2.x, cp2.y, end.x, end.y);
+                this.renderContext!.stroke();
+            }
+        });
     }
 
     public handleAnchorMove = (): void => {
@@ -40,6 +88,7 @@ export class ARLockIntoView extends FASTElement {
         subRegions?.forEach(element => {
             ((element as any) as SFTAnchoredElement).update();
         });
+        Updates.enqueue(() => this.drawConnections());
     };
 }
 
@@ -72,15 +121,40 @@ const trackerRegionTemplate = html`
         </anchored-region-pointer>
     </div>
 `;
+
+const manyTrackersTemplate = html`
+    <div class="many-trackers">
+        ${
+            () => {
+                let toReturn = html``;
+                for (let i = 0; i < 500; i++) {
+                    toReturn = html`${toReturn}${trackerRegionTemplate}`
+                }
+
+                return toReturn;
+            }
+        }
+    </div>
+`;
+
+
 /**
  * The template
  * @public
  */
-export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewTemplate<
+export function aeLockIntoViewTemplate<T extends AELockIntoView>(): ElementViewTemplate<
     T
 > {
     return html<T>`
         <template>
+            <canvas
+                height=2000;
+                width=2000;
+                class="canvas"
+                ${ref("canvasElement")}
+            >
+
+            </canvas>
             <h1>
                 Lock into view
             </h1>
@@ -301,108 +375,7 @@ export function arLockIntoViewTemplate<T extends ARLockIntoView>(): ElementViewT
 
             ${sectionDividerTemplate} Many, to test perf.${sectionDividerTemplate}
 
-            <div class="many-trackers">
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-                ${trackerRegionTemplate} ${trackerRegionTemplate} ${trackerRegionTemplate}
-            </div>
+            ${manyTrackersTemplate}
         </template>
     `;
 }
@@ -429,13 +402,13 @@ export const arLockIntoViewStyles = css`
     .tracking-region {
         pointer-events: none;
         background: blue;
-        opacity: 0.5;
+        opacity: 1;
         border: solid green 2px;
     }
     .tracking-region.many {
         pointer-events: none;
         background: blue;
-        opacity: 0.5;
+        opacity: 1;
         border: none;
     }
     .tracking-region.top {
@@ -464,16 +437,22 @@ export const arLockIntoViewStyles = css`
         flex-wrap: wrap;
     }
     .tracker-region-container {
-        height: 50px;
-        width: 50px;
+        height: 60px;
+        width: 60px;
     }
     .manypointer {
-        font-size: 20px;
+        font-size: 40px;
         grid-column: 2;
         grid-row: 2;
     }
     .manytracker {
-        height: 50px;
-        width: 50px;
+        height: 60px;
+        width: 60px;
+    }
+    .canvas {
+        pointer-events: none;
+        position: fixed;
+        z-index: 50;
+        transform: translate(-16px, -36px);
     }
 `;

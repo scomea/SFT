@@ -4,25 +4,22 @@ import { DesignSystem } from "@adaptive-web/adaptive-web-components";
 import { SFTAnchoredElement } from "./anchored-element.js";
 import { aestheticStyles, templateStyles } from "./anchored-element.styles.js";
 import { AnchoredElementAnatomy, template } from "./anchored-element.template.js";
-import { ComposeOptions } from "../../utilities/compose.js";
 
 const defaultStyles = [componentBaseStyles, templateStyles, aestheticStyles];
+
 
 /**
  * @public
  */
 export function composeAnchoredElement(
-    ds: DesignSystem,
-    options?: ComposeOptions<SFTAnchoredElement>
+    ds: DesignSystem
 ): FASTElementDefinition {
-    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, AnchoredElementAnatomy.interactivity, options);
+    const styles: ComposableStyles[] = DesignSystem.assembleStyles(defaultStyles, AnchoredElementAnatomy.interactivity);
 
     return SFTAnchoredElement.compose({
         name: `${ds.prefix}-anchored-element`,
-        template: options?.template?.(ds) ?? template(ds),
+        template: template(ds),
         styles,
-        registry: ds.registry,
-        elementOptions: options?.elementOptions,
-        shadowOptions: options?.shadowOptions
+        registry: ds.registry
     });
 }
